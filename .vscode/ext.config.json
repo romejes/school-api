@@ -1,0 +1,16 @@
+{
+    "disabled": [
+        "Angular.ng-template",
+        "johnpapa.Angular2",
+        "dbaeumer.vscode-eslint",
+        "atlassian.atlascode",
+        "bradlc.vscode-tailwindcss",
+        "redhat.vscode-xml",
+        "shufo.vscode-blade-formatter",
+        "onecentlin.laravel-blade",
+        "amiralizadeh9480.laravel-extra-intellisense",
+        "cjhowe7.laravel-blade"
+    ],
+    "autoReload": true,
+    "openInNewWindow": true
+}

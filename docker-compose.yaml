@@ -1,12 +1,13 @@
 services:
-  api:
+  server:
     build:
       context: ./vendor/laravel/sail/runtimes/8.4
       dockerfile: Dockerfile
       args:
         WWWGROUP: "${WWWGROUP}"
         MYSQL_CLIENT: mariadb-client
-    image: school_api/app
+    container_name: school_api-server
+    image: school_api-server
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
@@ -27,6 +28,7 @@ services:
       - mongodb
   mariadb:
     image: "mariadb:11"
+    container_name: school_api-mariadb
     ports:
       - "${FORWARD_DB_PORT:-3306}:3306"
     environment:
@@ -51,6 +53,7 @@ services:
       timeout: 5s
   mongodb:
     image: "mongodb/mongodb-atlas-local:latest"
+    container_name: school_api-mongodb
     environment:
       - "MONGODB_INITDB_ROOT_USERNAME=${MONGODB_USERNAME:-}"
       - "MONGODB_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD:-}"
