@@ -1,0 +1,78 @@
+services:
+  api:
+    build:
+      context: ./vendor/laravel/sail/runtimes/8.4
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: "${WWWGROUP}"
+        MYSQL_CLIENT: mariadb-client
+    image: school_api/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "${APP_PORT:-80}:80"
+      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
+    environment:
+      WWWUSER: "${WWWUSER}"
+      LARAVEL_SAIL: 1
+      XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
+      XDEBUG_CONFIG: "${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}"
+      IGNITION_LOCAL_SITES_PATH: "${PWD}"
+    volumes:
+      - ".:/var/www/html"
+    networks:
+      - school_api
+    depends_on:
+      - mariadb
+      - mongodb
+  mariadb:
+    image: "mariadb:11"
+    ports:
+      - "${FORWARD_DB_PORT:-3306}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - "school_api-mariadb:/var/lib/mysql"
+      - "./vendor/laravel/sail/database/mariadb/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh"
+    networks:
+      - school_api
+    healthcheck:
+      test:
+        - CMD
+        - healthcheck.sh
+        - "--connect"
+        - "--innodb_initialized"
+      retries: 3
+      timeout: 5s
+  mongodb:
+    image: "mongodb/mongodb-atlas-local:latest"
+    environment:
+      - "MONGODB_INITDB_ROOT_USERNAME=${MONGODB_USERNAME:-}"
+      - "MONGODB_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD:-}"
+    volumes:
+      - "school_api-mongodb:/data/db"
+    ports:
+      - "${FORWARD_MONGODB_PORT:-27017}:27017"
+    networks:
+      - school_api
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - "mongodb://localhost:27017/admin"
+        - "--eval=db.runCommand({ping:1})"
+      retries: 3
+      timeout: 5s
+networks:
+  school_api:
+    driver: bridge
+volumes:
+  school_api-mariadb:
+    driver: local
+  school_api-mongodb:
+    driver: local

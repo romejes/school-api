@@ -1,0 +1,82 @@
+openapi: "3.0.3"
+
+info:
+  title: School API
+  version: "1.0"
+
+servers:
+  - url: http://localhost/api
+
+tags:
+  - name: Education Level
+    description: Módulo de niveles educativos
+
+paths:
+  /levels:
+    get:
+      tags:
+        - Education Level
+      summary: Listar niveles
+      operationId: level.list
+      responses:
+        "200":
+          $ref: "#/components/responses/ListLevelResponse"
+
+  /sublevels:
+    get:
+      tags:
+        - Education Level
+      summary: Listar subniveles (grados)
+      operationId: sublevel.list
+      responses:
+        "200":
+          $ref: "#/components/responses/ListSublevelResponse"
+
+components:
+  schemas:
+    Level:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código usado para identificar el nivel
+        name:
+          type: string
+          description: Nombre del nivel
+
+    Sublevel:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código usado para identificar el grado
+        name:
+          type: string
+          description: Nombre del grado
+        level:
+          $ref: "#/components/schemas/Level"
+
+  responses:
+    ListLevelResponse:
+      description: Mostrar niveles
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Level"
+
+    ListSublevelResponse:
+      description: Mostrar subniveles
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Sublevel"
