@@ -1,15 +1,17 @@
-openapi: "3.0.3"
+openapi: 3.0.3
 
 info:
   title: School API
   version: "1.0"
 
 servers:
-  - url: http://localhost/api
+  - url: http://localhost/api/v1
 
 tags:
   - name: Education Level
     description: Módulo de niveles educativos
+  - name: Subject
+    description: Módulo de asignaturas
 
 paths:
   /levels:
@@ -21,6 +23,150 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/ListLevelResponse"
+
+  /subjects:
+    get:
+      tags:
+        - Subject
+      summary: Listar asignaturas
+      operationId: subject.list
+      parameters:
+        - name: per_page
+          in: query
+          description: Cantidad de registros por página
+          schema:
+            type: string
+            nullable: true
+        - name: search
+          in: query
+          description: Texto de búsqueda
+          schema:
+            type: string
+            nullable: true
+      responses:
+        "200":
+          $ref: "#/components/responses/ListSubjectResponse"
+
+    post:
+      tags:
+        - Subject
+      summary: Crear asignatura
+      operationId: subject.create
+      requestBody:
+        $ref: "#/components/requestBodies/CreateSubjectRequest"
+      responses:
+        "201":
+          description: Asignatura creada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subject"
+        "422":
+          description: Errores de validacion
+
+  /subjects/{id}:
+    get:
+      tags:
+        - Subject
+      summary: Mostrar asignatura
+      operationId: subject.show
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de asignatura
+      responses:
+        "200":
+          description: Asignatura editada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subject"
+        "404":
+          description: Asignatura no encontrada
+
+    put:
+      tags:
+        - Subject
+      summary: Editar asignatura
+      operationId: subject.edit
+      requestBody:
+        $ref: "#/components/requestBodies/EditSubjectRequest"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de asignatura
+      responses:
+        "200":
+          description: Asignatura editada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subject"
+        "404":
+          description: Asignatura no encontrada
+        "422":
+          description: Errores de validacion
+
+    delete:
+      tags:
+        - Subject
+      summary: Eliminar asignatura
+      operationId: subject.delete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de asignatura
+      responses:
+        "200":
+          $ref: "#/components/responses/DeleteResponse"
+        "404":
+          description: Asignatura no encontrada
+
+  /subjects/{id}/active:
+    patch:
+      tags:
+        - Subject
+      summary: Activar asignatura
+      operationId: subject.active
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de asignatura
+      requestBody:
+        $ref: "#/components/requestBodies/ChangeActiveSubjectRequest"
+      responses:
+        "200":
+          description: Asignatura editada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subject"
+        "404":
+          description: Asignatura no encontrada
 
   /sublevels:
     get:
@@ -44,6 +190,19 @@ components:
           type: string
           description: Nombre del nivel
 
+    Subject:
+      type: object
+      properties:
+        ode:
+          type: string
+          description: Código usado para identificar la asignatura
+        name:
+          type: string
+          description: Nombre de la asignatura
+        active:
+          type: boolean
+          description: Indica si esta activo o no
+
     Sublevel:
       type: object
       properties:
@@ -56,7 +215,71 @@ components:
         level:
           $ref: "#/components/schemas/Level"
 
+  requestBodies:
+    ChangeActiveSubjectRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - active
+            properties:
+              active:
+                type: boolean
+                description: Indica si estará activo o no la asignatura
+
+    CreateSubjectRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - code
+            properties:
+              name:
+                type: string
+                description: Nombre de la asignatura
+                example: "Geografía"
+              code:
+                type: string
+                description: Código de la asignatura
+                example: "GEO"
+
+    EditSubjectRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - code
+            properties:
+              name:
+                type: string
+                description: Nombre de la asignatura
+                example: "Geografía"
+              code:
+                type: string
+                description: Código de la asignatura
+                example: "GEO"
+
   responses:
+    DeleteResponse:
+      description: Registro eliminado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID del registro
+              deleted:
+                type: boolean
+                default: true
+                description: Indica que el registro fue eliminado
+
     ListLevelResponse:
       description: Mostrar niveles
       content:
@@ -68,6 +291,18 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/Level"
+
+    ListSubjectResponse:
+      description: Mostrar subniveles
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Subject"
 
     ListSublevelResponse:
       description: Mostrar subniveles

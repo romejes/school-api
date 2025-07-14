@@ -1,13 +1,13 @@
 <?php
 
-namespace SchoolApi\EducationLevel\Providers;
+namespace SchoolApi\Subject\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    protected string $name = 'EducationLevel';
+    protected string $name = 'Subject';
 
     /**
      * Called before routes are registered.

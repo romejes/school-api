@@ -4,7 +4,7 @@ namespace App\Interfaces\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-interface IGetAndPaginate
+interface IGetAndPaginateRepository
 {
     /**
      * Obtiene todos los registros en formato de paginación

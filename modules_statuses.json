@@ -1,4 +1,6 @@
 {
     "User": true,
-    "EducationLevel": true
+    "EducationLevel": true,
+    "Subject": true,
+    "Routes": true
 }
