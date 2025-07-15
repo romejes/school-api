@@ -1,5 +1,5 @@
 {
-    "conventionalCommits.scopes": ["education-level", "subject"],
+    "conventionalCommits.scopes": ["education-level", "subject", "husky"],
 
     "diffEditor.ignoreTrimWhitespace": true,
 

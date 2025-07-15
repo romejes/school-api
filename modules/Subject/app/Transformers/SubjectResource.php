@@ -13,6 +13,7 @@ class SubjectResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" => $this->id,
             "code" => $this->code,
             "name" => $this->name,
             "active" => $this->active
