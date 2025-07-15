@@ -1,0 +1,6 @@
+####################################################################
+##  Ejecuta los tests de la aplicación
+####################################################################
+docker exec school_api-server vendor/bin/pest modules
+
+

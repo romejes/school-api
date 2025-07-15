@@ -1,0 +1,4 @@
+####################################################################
+## Valida que el commit tenga el formato de Conventional Commits
+####################################################################
+npx --no -- commitlint --edit $1
