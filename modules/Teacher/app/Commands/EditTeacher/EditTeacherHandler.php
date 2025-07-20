@@ -28,7 +28,7 @@ class EditTeacherHandler
     public function __invoke(EditTeacherCommand $command)
     {
         return $this->teacherRepository
-            ->update($command->getID(), [
+            ->findAndUpdate($command->getID(), [
                 "first_name" => $command->getFirstName(),
                 "last_name" => $command->getLastName(),
                 "email" => $command->getEmail(),

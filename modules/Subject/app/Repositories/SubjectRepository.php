@@ -2,7 +2,6 @@
 
 namespace SchoolApi\Subject\Repositories;
 
-use Exception;
 use SchoolApi\Subject\Exceptions\SubjectNotFoundException;
 use SchoolApi\Subject\Interfaces\ISubjectRepository;
 use SchoolApi\Subject\Models\Subject;
@@ -29,7 +28,7 @@ class SubjectRepository implements ISubjectRepository
         return $this->model->paginate($perPage);
     }
 
-    public function find(int $id, bool $fail = true)
+    public function showById(int $id, array $relations = [], $fail = true)
     {
         $subject = $this->model->find($id);
 
@@ -45,16 +44,16 @@ class SubjectRepository implements ISubjectRepository
         return $this->model->create($values);
     }
 
-    public function update(int $id, array $values)
+    public function findAndUpdate(int $id, array $data)
     {
-        $subject = $this->find($id);
-        $subject->update($values);
+        $subject = $this->showById($id);
+        $subject->update($data);
         return $subject->refresh();
     }
 
     public function delete(int $id)
     {
-        $subject = $this->find($id);
+        $subject = $this->showById($id);
         $subject->delete();
         return true;
     }

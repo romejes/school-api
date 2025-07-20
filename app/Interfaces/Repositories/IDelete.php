@@ -1,7 +1,7 @@
 <?php
 namespace App\Interfaces\Repositories;
 
-interface IDeleteRepository
+interface IDelete
 {
     /**
      * Elimina un registro

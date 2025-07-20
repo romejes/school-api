@@ -1,25 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use SchoolApi\Subject\Http\Controllers;
+use SchoolApi\Subject\Http\Controllers\SubjectController;
 
 Route::prefix('v1')
     ->group(function () {
-        Route::get("subjects", Controllers\ListSubjectController::class)
+        Route::get("subjects", [SubjectController::class, "list"])
             ->name("subjects.list");
 
-        Route::get("subjects/{id}", Controllers\ShowSubjectController::class)
+        Route::get("subjects/{id}", [SubjectController::class, "show"])
             ->name("subjects.show");
 
-        Route::put("subjects/{id}", Controllers\EditSubjectController::class)
+        Route::put("subjects/{id}", [SubjectController::class, "edit"])
             ->name("subjects.edit");
 
-        Route::post("subjects", Controllers\CreateSubjectController::class)
+        Route::post("subjects", [SubjectController::class, "create"])
             ->name("subjects.create");
 
-        Route::delete("subjects/{id}", Controllers\DeleteSubjectController::class)
+        Route::delete("subjects/{id}", [SubjectController::class, "delete"])
             ->name("subjects.delete");
 
-        Route::patch("subjects/{id}/active", Controllers\ChangeActiveSubjectController::class)
+        Route::patch("subjects/{id}/active", [SubjectController::class, "changeActive"])
             ->name("subjects.change-active");
     });

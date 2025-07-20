@@ -28,7 +28,7 @@ class EditSubjectHandler
     public function __invoke(EditSubjectCommand $command)
     {
         return $this->subjectRepository
-            ->update($command->getID(), [
+            ->findAndUpdate($command->getID(), [
                 "code" => $command->getCode(),
                 "name" => $command->getName(),
             ]);

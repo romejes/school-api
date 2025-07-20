@@ -46,10 +46,10 @@ class TeacherRepository implements ITeacherRepository
         return $this->model->create($values);
     }
 
-    public function update(int $id, array $values)
+    public function findAndUpdate(int $id, array $data)
     {
         $teacher = $this->showById($id);
-        $teacher->update($values);
+        $teacher->update($data);
         return $teacher->refresh();
     }
 

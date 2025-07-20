@@ -2,24 +2,13 @@
 
 namespace SchoolApi\Teacher\Interfaces;
 
-use App\Interfaces\Repositories\IDeleteRepository;
-use App\Interfaces\Repositories\IGetAndPaginateRepository;
-use App\Interfaces\Repositories\IShowById;
+use App\Interfaces\Repositories;
 
-interface ITeacherRepository extends IGetAndPaginateRepository, IDeleteRepository, IShowById
+interface ITeacherRepository extends
+    Repositories\IGetAndPaginate,
+    Repositories\IDelete,
+    Repositories\IShowById,
+    Repositories\ICreate,
+    Repositories\IFindAndUpdate
 {
-    /**
-     * Crea un nuevo registro
-     * @param array $values
-     * @return \SchoolApi\Teacher\Models\Teacher
-     */
-    public function create(array $values);
-
-    /**
-     * Actualiza un registro
-     * @param int $id
-     * @param array $values
-     * @return \SchoolApi\Teacher\Models\Teacher
-     */
-    public function update(int $id, array $values);
 }

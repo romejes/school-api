@@ -7,53 +7,31 @@ use Illuminate\Http\Request;
 
 class $CLASS$ extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function list($request)
     {
-        //
+    }
 
-        return response()->json([]);
+    public function show(int $id)
+    {
+    }
+
+    public function create($request)
+    {
+    }
+
+    public function edit(int $id, $request)
+    {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function delete(int $id)
     {
-        //
-
-        return response()->json([]);
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        //
-
-        return response()->json([]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        //
-
-        return response()->json([]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-
-        return response()->json([]);
+        return response()->json([
+            "id" => $id,
+            "deleted" => true
+        ]);
     }
 }

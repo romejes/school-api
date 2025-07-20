@@ -28,7 +28,7 @@ class ChangeActiveSubjectHandler
     public function __invoke(ChangeActiveSubjectCommand $command)
     {
         $subject = $this->subjectRepository
-            ->update($command->getSubjectId(), ["active" => $command->getActive()]);
+            ->findAndUpdate($command->getSubjectId(), ["active" => $command->getActive()]);
 
         return $subject;
     }

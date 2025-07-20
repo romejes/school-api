@@ -28,6 +28,6 @@ class ShowSubjectHandler
      */
     public function __invoke(ShowSubjectCommand $command)
     {
-        return $this->subjectRepository->find($command->getID());
+        return $this->subjectRepository->showById($command->getID());
     }
 }

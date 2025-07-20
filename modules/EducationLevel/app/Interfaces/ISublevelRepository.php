@@ -2,8 +2,8 @@
 
 namespace SchoolApi\EducationLevel\Interfaces;
 
-use App\Interfaces\Repositories\IGetAndPaginateRepository;
+use App\Interfaces\Repositories\IGetAndPaginate;
 
-interface ISublevelRepository extends IGetAndPaginateRepository
+interface ISublevelRepository extends IGetAndPaginate
 {
 }

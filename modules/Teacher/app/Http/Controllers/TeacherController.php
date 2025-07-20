@@ -3,14 +3,8 @@
 namespace SchoolApi\Teacher\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use SchoolApi\Teacher\Commands\CreateTeacher\CreateTeacherCommand;
-use SchoolApi\Teacher\Commands\DeleteTeacher\DeleteTeacherCommand;
-use SchoolApi\Teacher\Commands\EditTeacher\EditTeacherCommand;
-use SchoolApi\Teacher\Commands\ListTeachers\ListTeachersCommand;
-use SchoolApi\Teacher\Commands\ShowTeacher\ShowTeacherCommand;
-use SchoolApi\Teacher\Http\Requests\CreateTeacherRequest;
-use SchoolApi\Teacher\Http\Requests\EditTeacherRequest;
-use SchoolApi\Teacher\Http\Requests\ListTeachersRequest;
+use SchoolApi\Teacher\Commands;
+use SchoolApi\Teacher\Http\Requests;
 use SchoolApi\Teacher\Transformers\TeacherResource;
 
 class TeacherController extends Controller
@@ -20,9 +14,9 @@ class TeacherController extends Controller
      * @param \SchoolApi\Teacher\Http\Requests\ListTeachersRequest $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function list(ListTeachersRequest $request)
+    public function list(Requests\ListTeachersRequest $request)
     {
-        $command = new ListTeachersCommand(10, null);
+        $command = new Commands\ListTeachers\ListTeachersCommand(10, null);
         $teachers = $this->commandBus->dispatch($command);
 
         return TeacherResource::collection($teachers);
@@ -35,7 +29,7 @@ class TeacherController extends Controller
      */
     public function show(int $id)
     {
-        $command = new ShowTeacherCommand($id);
+        $command = new Commands\ShowTeacher\ShowTeacherCommand($id);
         $teacher = $this->commandBus->dispatch($command);
 
         return new TeacherResource($teacher);
@@ -46,9 +40,9 @@ class TeacherController extends Controller
      * @param \SchoolApi\Teacher\Http\Requests\CreateTeacherRequest $request
      * @return TeacherResource
      */
-    public function create(CreateTeacherRequest $request)
+    public function create(Requests\CreateTeacherRequest $request)
     {
-        $command = new CreateTeacherCommand($request->all());
+        $command = new Commands\CreateTeacher\CreateTeacherCommand($request->all());
         $teacher = $this->commandBus->dispatch($command);
 
         return new TeacherResource($teacher);
@@ -60,9 +54,9 @@ class TeacherController extends Controller
      * @param \SchoolApi\Teacher\Http\Requests\EditTeacherRequest $request
      * @return TeacherResource
      */
-    public function edit(int $id, EditTeacherRequest $request)
+    public function edit(int $id, Requests\EditTeacherRequest $request)
     {
-        $command = new EditTeacherCommand($id, $request->all());
+        $command = new Commands\EditTeacher\EditTeacherCommand($id, $request->all());
         $teacher = $this->commandBus->dispatch($command);
 
         return new TeacherResource($teacher);
@@ -75,7 +69,7 @@ class TeacherController extends Controller
      */
     public function delete(int $id)
     {
-        $command = new DeleteTeacherCommand($id);
+        $command = new Commands\DeleteTeacher\DeleteTeacherCommand($id);
         $this->commandBus->dispatch($command);
 
         return response()->json([
