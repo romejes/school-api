@@ -12,6 +12,8 @@ tags:
     description: Módulo de niveles educativos
   - name: Subject
     description: Módulo de asignaturas
+  - name: Teacher
+    description: Módulo de docentes
 
 paths:
   /levels:
@@ -178,6 +180,122 @@ paths:
         "200":
           $ref: "#/components/responses/ListSublevelResponse"
 
+  /teachers:
+    get:
+      tags:
+        - Teacher
+      summary: Listar docentes
+      operationId: teacher.list
+      parameters:
+        - name: per_page
+          in: query
+          description: Cantidad de registros por página
+          schema:
+            type: string
+            nullable: true
+        - name: search
+          in: query
+          description: Texto de búsqueda
+          schema:
+            type: string
+            nullable: true
+      responses:
+        "200":
+          $ref: "#/components/responses/ListTeacherResponse"
+
+    post:
+      tags:
+        - Teacher
+      summary: Registrar docente
+      operationId: teacher.create
+      requestBody:
+        $ref: "#/components/requestBodies/CreateTeacherRequest"
+      responses:
+        "201":
+          description: Docente registrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Teacher"
+        "422":
+          description: Errores de validacion
+
+  /teachers/{id}:
+    get:
+      tags:
+        - Teacher
+      summary: Mostrar docente
+      operationId: teacher.show
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de docente
+      responses:
+        "200":
+          description: Docente encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Teacher"
+        "404":
+          description: Docente no encontrado
+
+    put:
+      tags:
+        - Teacher
+      summary: Editar docente
+      operationId: teacher.edit
+      requestBody:
+        $ref: "#/components/requestBodies/EditTeacherRequest"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de docente
+      responses:
+        "200":
+          description: Datos de docente modificados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Teacher"
+        "404":
+          description: Docente no encontrado
+        "422":
+          description: Errores de validacion
+
+    delete:
+      tags:
+        - Teacher
+      summary: Eliminar docente
+      operationId: teacher.delete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de docente
+      responses:
+        "200":
+          $ref: "#/components/responses/DeleteResponse"
+        "404":
+          description: Docente no encontrado
+
 components:
   schemas:
     Level:
@@ -215,6 +333,37 @@ components:
         level:
           $ref: "#/components/schemas/Level"
 
+    Teacher:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID de docente
+        first_name:
+          type: string
+          description: Nombres del docente
+          example: Carlos
+        last_name:
+          type: string
+          description: Apellidos del docente
+          example: Diaz Riveros
+        email:
+          type: string
+          description: Correo electrónico del docente
+          example: cdiaz@gmail.com
+        phone:
+          type: string
+          description: Número telefónico del docente
+          example: +5193554112
+        address:
+          type: string
+          description: Dirección del docente
+          example: Calle Perú 345
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha de registro
+
   requestBodies:
     ChangeActiveSubjectRequest:
       content:
@@ -246,6 +395,39 @@ components:
                 description: Código de la asignatura
                 example: "GEO"
 
+    CreateTeacherRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - first_name
+              - last_name
+              - email
+              - phone
+              - address
+            properties:
+              first_name:
+                type: string
+                description: Nombres del abogado
+                example: Carlos Alberto
+              last_name:
+                type: string
+                description: Apellidos del abogado
+                example: Perez Ruiz
+              email:
+                type: string
+                description: Correo electrónico del docente
+                example: cdiaz@gmail.com
+              phone:
+                type: string
+                description: Número telefónico del docente
+                example: +5193554112
+              address:
+                type: string
+                description: Dirección del docente
+                example: Calle Perú 345
+
     EditSubjectRequest:
       content:
         application/json:
@@ -263,6 +445,39 @@ components:
                 type: string
                 description: Código de la asignatura
                 example: "GEO"
+
+    EditTeacherRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - first_name
+              - last_name
+              - email
+              - phone
+              - address
+            properties:
+              first_name:
+                type: string
+                description: Nombres del abogado
+                example: Carlos Alberto
+              last_name:
+                type: string
+                description: Apellidos del abogado
+                example: Perez Ruiz
+              email:
+                type: string
+                description: Correo electrónico del docente
+                example: cdiaz@gmail.com
+              phone:
+                type: string
+                description: Número telefónico del docente
+                example: +5193554112
+              address:
+                type: string
+                description: Dirección del docente
+                example: Calle Perú 345
 
   responses:
     DeleteResponse:
@@ -315,3 +530,15 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/Sublevel"
+
+    ListTeacherResponse:
+      description: Mostrar docentes
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Teacher"
