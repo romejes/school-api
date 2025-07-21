@@ -3,13 +3,8 @@
 namespace SchoolApi\Student\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use SchoolApi\Student\Commands\CreateStudent\CreateStudentCommand;
-use SchoolApi\Student\Commands\DeleteStudent\DeleteStudentCommand;
-use SchoolApi\Student\Commands\EditStudent\EditStudentCommand;
-use SchoolApi\Student\Commands\ListStudents\ListStudentsCommand;
-use SchoolApi\Student\Commands\ShowStudent\ShowStudentCommand;
-use SchoolApi\Student\Http\Requests\CreateStudentRequest;
-use SchoolApi\Student\Http\Requests\EditStudentRequest;
+use SchoolApi\Student\Commands;
+use SchoolApi\Student\Http\Requests;
 use SchoolApi\Student\Transformers\StudentResource;
 
 class StudentController extends Controller
@@ -20,7 +15,7 @@ class StudentController extends Controller
      */
     public function list()
     {
-        $command = new ListStudentsCommand(10, null);
+        $command = new Commands\ListStudents\ListStudentsCommand(10, null);
         $students = $this->commandBus->dispatch($command);
 
         return StudentResource::collection($students);
@@ -33,7 +28,7 @@ class StudentController extends Controller
      */
     public function show(int $id)
     {
-        $command = new ShowStudentCommand($id);
+        $command = new Commands\ShowStudent\ShowStudentCommand($id);
         $student = $this->commandBus->dispatch($command);
 
         return new StudentResource($student);
@@ -44,9 +39,9 @@ class StudentController extends Controller
      * @param \SchoolApi\Student\Http\Requests\CreateStudentRequest $request
      * @return StudentResource
      */
-    public function create(CreateStudentRequest $request)
+    public function create(Requests\CreateStudentRequest $request)
     {
-        $command = new CreateStudentCommand($request->all());
+        $command = new Commands\CreateStudent\CreateStudentCommand($request->all());
         $student = $this->commandBus->dispatch($command);
 
         return new StudentResource($student);
@@ -58,9 +53,9 @@ class StudentController extends Controller
      * @param \SchoolApi\Student\Http\Requests\EditStudentRequest $request
      * @return StudentResource
      */
-    public function edit(int $id, EditStudentRequest $request)
+    public function edit(int $id, Requests\EditStudentRequest $request)
     {
-        $command = new EditStudentCommand($id, $request->all());
+        $command = new Commands\EditStudent\EditStudentCommand($id, $request->all());
         $student = $this->commandBus->dispatch($command);
 
         return new StudentResource($student);
@@ -73,7 +68,7 @@ class StudentController extends Controller
      */
     public function delete(int $id)
     {
-        $command = new DeleteStudentCommand($id);
+        $command = new Commands\DeleteStudent\DeleteStudentCommand($id);
         $this->commandBus->dispatch($command);
 
         return response()->json([
