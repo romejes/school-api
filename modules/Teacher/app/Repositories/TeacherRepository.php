@@ -35,7 +35,7 @@ class TeacherRepository implements ITeacherRepository
             ->find($id);
 
         if (!$teacher && $fail) {
-            throw new TeacherNotFoundException("Docente no encontrado");
+            throw new TeacherNotFoundException($id);
         }
 
         return $teacher;

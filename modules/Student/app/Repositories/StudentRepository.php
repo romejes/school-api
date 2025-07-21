@@ -35,7 +35,7 @@ class StudentRepository implements IStudentRepository
             ->find($id);
 
         if (!$student && $fail) {
-            throw new StudentNotFoundException("Estudiante no encontrado");
+            throw new StudentNotFoundException($id);
         }
 
         return $student;

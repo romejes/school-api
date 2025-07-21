@@ -45,5 +45,5 @@ it("returns error when create subject with existing code", function () {
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("code");
+        ->assertJsonValidationErrorFor("code", "extended_message");
 });

@@ -61,7 +61,7 @@ it("returns error when create student with existing email", function () {
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("email");
+        ->assertJsonValidationErrorFor("email", "extended_message");
 });
 
 it("returns error when create student with existing phone", function () {
@@ -83,5 +83,5 @@ it("returns error when create student with existing phone", function () {
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("phone");
+        ->assertJsonValidationErrorFor("phone", "extended_message");
 });

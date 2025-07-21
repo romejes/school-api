@@ -66,7 +66,7 @@ it("returns error when edit subject code that already exists", function () {
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("code");
+        ->assertJsonValidationErrorFor("code", "extended_message");
 });
 
 it("should return error when subject not exists", function () {
@@ -83,6 +83,9 @@ it("should return error when subject not exists", function () {
     //  assert
     $response->assertNotFound()
         ->assertJson([
+            "code" => "SUBJ_001",
+            "extended_message" => "La asignatura con el ID 1 no fué encontrada en la base de datos",
+            "type" => "not_found_error",
             "message" => "Asignatura no encontrada"
         ]);
 });

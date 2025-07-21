@@ -38,6 +38,9 @@ it("returns error when subject not exists", function () {
     //  assert
     $response->assertNotFound()
         ->assertJson([
+            "code" => "SUBJ_001",
+            "extended_message" => "La asignatura con el ID 1 no fué encontrada en la base de datos",
+            "type" => "not_found_error",
             "message" => "Asignatura no encontrada"
         ]);
 });

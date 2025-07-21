@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Exceptions\ApiException;
+use App\Exceptions\PayloadValidationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,10 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            return response()->json([
-                "message" => $e->getMessage(),
-            ], 404);
-        });
+        $exceptions->render(fn(ApiException $e) => response()->json($e->toArray(), $e->getCode()));
+
+        $exceptions->render(fn(ValidationException $e) => throw new PayloadValidationException($e));
     })
     ->create();

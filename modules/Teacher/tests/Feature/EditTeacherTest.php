@@ -114,7 +114,7 @@ it("returns error when edit teacher email that already exists", function () {
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("email");
+        ->assertJsonValidationErrorFor("email", "extended_message");
 });
 
 it("returns error when edit teacher phone number that already exists", function () {
@@ -136,7 +136,7 @@ it("returns error when edit teacher phone number that already exists", function 
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("phone");
+        ->assertJsonValidationErrorFor("phone", "extended_message");
 });
 
 it("should return error when subject not exists", function () {
@@ -156,6 +156,9 @@ it("should return error when subject not exists", function () {
     //  assert
     $response->assertNotFound()
         ->assertJson([
+            "code" => "TEAC_001",
+            "extended_message" => "El docente con el ID 1 no fué encontrado en la base de datos",
+            "type" => "not_found_error",
             "message" => "Docente no encontrado"
         ]);
 });

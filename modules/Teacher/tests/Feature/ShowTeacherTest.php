@@ -40,6 +40,9 @@ it("returns error when teacher not exists", function () {
     //  assert
     $response->assertNotFound()
         ->assertJson([
+            "code" => "TEAC_001",
+            "extended_message" => "El docente con el ID 1 no fué encontrado en la base de datos",
+            "type" => "not_found_error",
             "message" => "Docente no encontrado"
         ]);
 });

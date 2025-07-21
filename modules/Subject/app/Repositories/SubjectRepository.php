@@ -30,10 +30,10 @@ class SubjectRepository implements ISubjectRepository
 
     public function showById(int $id, array $relations = [], $fail = true)
     {
-        $subject = $this->model->find($id);
+        $subject = $this->model->with($relations)->find($id);
 
         if (!$subject && $fail) {
-            throw new SubjectNotFoundException("Asignatura no encontrada");
+            throw new SubjectNotFoundException($id);
         }
 
         return $subject;

@@ -2,12 +2,20 @@
 
 namespace SchoolApi\Student\Exceptions;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Exceptions\NotFoundException;
+use SchoolApi\Student\Enums\StudentErrorCodes;
 
-class StudentNotFoundException extends NotFoundHttpException
+/**
+ * Excepción lanzada cuando un estudiante no se encuentra en la base de datos
+ * @package SchoolApi\Student\Exceptions;
+ */
+class StudentNotFoundException extends NotFoundException
 {
-    public function __construct($message)
+    public function __construct(int $studentID)
     {
-        parent::__construct($message);
+        parent::__construct(
+            StudentErrorCodes::STUDENT_NOT_FOUND,
+            "El estudiante con ID {$studentID} no fué encontrado en la base de datos"
+        );
     }
 }

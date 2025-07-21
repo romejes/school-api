@@ -119,7 +119,7 @@ it("returns error when edit student email that already exists", function () {
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("email");
+        ->assertJsonValidationErrorFor("email", "extended_message");
 });
 
 it("returns error when edit student phone number that already exists", function () {
@@ -142,7 +142,7 @@ it("returns error when edit student phone number that already exists", function 
 
     //  assert
     $response->assertUnprocessable()
-        ->assertJsonValidationErrorFor("phone");
+        ->assertJsonValidationErrorFor("phone", "extended_message");
 });
 
 it("should return error when student not exists", function () {
@@ -163,6 +163,9 @@ it("should return error when student not exists", function () {
     //  assert
     $response->assertNotFound()
         ->assertJson([
-            "message" => "Estudiante no encontrado"
+            "code" => "STUD_001",
+            "message" => "Estudiante no encontrado",
+            "extended_message" => "El estudiante con ID 1 no fué encontrado en la base de datos",
+            "type" => "not_found_error"
         ]);
 });

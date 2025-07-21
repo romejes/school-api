@@ -42,6 +42,9 @@ it("returns error when student not exists", function () {
     //  assert
     $response->assertNotFound()
         ->assertJson([
-            "message" => "Estudiante no encontrado"
+            "code" => "STUD_001",
+            "message" => "Estudiante no encontrado",
+            "extended_message" => "El estudiante con ID 1 no fué encontrado en la base de datos",
+            "type" => "not_found_error"
         ]);
 });
