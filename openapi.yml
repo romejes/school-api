@@ -10,6 +10,8 @@ servers:
 tags:
   - name: Education Level
     description: Módulo de niveles educativos
+  - name: Student
+    description: Módulo de estudiantes
   - name: Subject
     description: Módulo de asignaturas
   - name: Teacher
@@ -25,6 +27,122 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/ListLevelResponse"
+
+  /students:
+    get:
+      tags:
+        - Student
+      summary: Listar estudiantes
+      operationId: student.list
+      parameters:
+        - name: per_page
+          in: query
+          description: Cantidad de registros por página
+          schema:
+            type: string
+            nullable: true
+        - name: search
+          in: query
+          description: Texto de búsqueda
+          schema:
+            type: string
+            nullable: true
+      responses:
+        "200":
+          $ref: "#/components/responses/ListStudentResponse"
+
+    post:
+      tags:
+        - Student
+      summary: Registrar estudiante
+      operationId: student.create
+      requestBody:
+        $ref: "#/components/requestBodies/CreateStudentRequest"
+      responses:
+        "201":
+          description: Estudiante registrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Student"
+        "422":
+          description: Errores de validacion
+
+  /students/{id}:
+    get:
+      tags:
+        - Student
+      summary: Mostrar estudiante
+      operationId: student.show
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de estudiante
+      responses:
+        "200":
+          description: Estudiante encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Student"
+        "404":
+          description: Estudiante no encontrado
+
+    put:
+      tags:
+        - Student
+      summary: Editar estudiante
+      operationId: student.edit
+      requestBody:
+        $ref: "#/components/requestBodies/EditStudentRequest"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de estudiante
+      responses:
+        "200":
+          description: Datos de estudiante modificados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Student"
+        "404":
+          description: Estudiante no encontrado
+        "422":
+          description: Errores de validacion
+
+    delete:
+      tags:
+        - Student
+      summary: Eliminar estudiante
+      operationId: student.delete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID de estudiante
+      responses:
+        "200":
+          $ref: "#/components/responses/DeleteResponse"
+        "404":
+          description: Estudiante no encontrado
 
   /subjects:
     get:
@@ -308,6 +426,46 @@ components:
           type: string
           description: Nombre del nivel
 
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID de estudiante
+        code:
+          type: string
+          description: Código de estudiante
+          example: 2025060900151
+        first_name:
+          type: string
+          description: Nombres del estudiante
+          example: Carlos
+        last_name:
+          type: string
+          description: Apellidos del estudiante
+          example: Diaz Riveros
+        email:
+          type: string
+          description: Correo electrónico del estudiante
+          example: cdiaz@gmail.com
+        phone:
+          type: string
+          description: Número telefónico del estudiante
+          example: "+5193554112"
+        address:
+          type: string
+          description: Dirección del estudiante
+          example: Calle Perú 345
+        birthday:
+          type: string
+          format: date
+          description: Fecha de nacimiento del estudiante
+          example: "1989-06-06"
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha de registro
+
     Subject:
       type: object
       properties:
@@ -377,6 +535,45 @@ components:
                 type: boolean
                 description: Indica si estará activo o no la asignatura
 
+    CreateStudentRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - first_name
+              - last_name
+              - email
+              - phone
+              - address
+              - birthday
+            properties:
+              first_name:
+                type: string
+                description: Nombres del estudiante
+                example: Carlos Alberto
+              last_name:
+                type: string
+                description: Apellidos del estudiante
+                example: Perez Ruiz
+              email:
+                type: string
+                description: Correo electrónico del estudiante
+                example: cdiaz@gmail.com
+              phone:
+                type: string
+                description: Número telefónico del estudiante
+                example: +5193554112
+              address:
+                type: string
+                description: Dirección del estudiante
+                example: Calle Perú 345
+              birthday:
+                type: string
+                format: date
+                description: Fecha de nacimiento del estudiante
+                example: "1989-06-06"
+
     CreateSubjectRequest:
       content:
         application/json:
@@ -427,6 +624,45 @@ components:
                 type: string
                 description: Dirección del docente
                 example: Calle Perú 345
+
+    EditStudentRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - first_name
+              - last_name
+              - email
+              - phone
+              - address
+              - birthday
+            properties:
+              first_name:
+                type: string
+                description: Nombres del estudiante
+                example: Carlos Alberto
+              last_name:
+                type: string
+                description: Apellidos del estudiante
+                example: Perez Ruiz
+              email:
+                type: string
+                description: Correo electrónico del estudiante
+                example: cdiaz@gmail.com
+              phone:
+                type: string
+                description: Número telefónico del estudiante
+                example: +5193554112
+              address:
+                type: string
+                description: Dirección del estudiante
+                example: Calle Perú 345
+              birthday:
+                type: string
+                format: date
+                description: Fecha de nacimiento del estudiante
+                example: "1989-06-06"
 
     EditSubjectRequest:
       content:
@@ -506,6 +742,18 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/Level"
+
+    ListStudentResponse:
+      description: Mostrar estudiantes
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Student"
 
     ListSubjectResponse:
       description: Mostrar subniveles

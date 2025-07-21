@@ -2,5 +2,6 @@
     "User": true,
     "EducationLevel": true,
     "Subject": true,
-    "Teacher": true
+    "Teacher": true,
+    "Student": true
 }

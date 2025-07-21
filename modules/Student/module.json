@@ -1,0 +1,11 @@
+{
+    "name": "Student",
+    "alias": "student",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "SchoolApi\\Student\\Providers\\StudentServiceProvider"
+    ],
+    "files": []
+}
